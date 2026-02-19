@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Job Notification Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Libre+Baskerville:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="kodnest-design-system.css" />
+</head>
+<body class="kn-app">
+  <header class="kn-app-nav">
+    <button type="button" class="kn-hamburger" aria-expanded="false" aria-controls="nav-list" aria-label="Open menu" id="hamburger">
+      <span class="kn-hamburger__icon">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+    </button>
+    <nav aria-label="Main">
+      <ul class="kn-app-nav__list" id="nav-list">
+        <li><a href="#dashboard" class="kn-app-nav__link" data-route="dashboard">Dashboard</a></li>
+        <li><a href="#saved" class="kn-app-nav__link" data-route="saved">Saved</a></li>
+        <li><a href="#digest" class="kn-app-nav__link" data-route="digest">Digest</a></li>
+        <li><a href="#settings" class="kn-app-nav__link" data-route="settings">Settings</a></li>
+        <li><a href="#proof" class="kn-app-nav__link" data-route="proof">Proof</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="kn-app-main">
+    <!-- Landing (/) -->
+    <section class="kn-page kn-landing" id="page-landing" data-route="landing">
+      <div class="kn-landing__hero">
+        <h1 class="kn-landing__headline">Stop Missing The Right Jobs.</h1>
+        <p class="kn-landing__sub">Precision-matched job discovery delivered daily at 9AM.</p>
+        <a href="#settings" class="kn-btn kn-btn--primary kn-landing__cta" data-route="settings">Start Tracking</a>
+      </div>
+    </section>
+
+    <!-- Dashboard -->
+    <section class="kn-page kn-dashboard" id="page-dashboard" data-route="dashboard">
+      <h1 class="kn-heading-1">Dashboard</h1>
+      <div class="kn-error-box kn-mb-md" id="prefs-banner" style="display: none;">
+        <p class="kn-error-box__message">Set your preferences to activate intelligent matching.</p>
+      </div>
+      <div class="kn-filter-bar">
+        <div class="kn-filter-bar__search">
+          <input type="text" id="filter-keyword" class="kn-input" placeholder="Search by title or company..." />
+        </div>
+        <div class="kn-filter-bar__filters">
+          <select id="filter-location" class="kn-input kn-select">
+            <option value="">Location</option>
+          </select>
+          <select id="filter-mode" class="kn-input kn-select">
+            <option value="">Mode</option>
+            <option value="Remote">Remote</option>
+            <option value="Hybrid">Hybrid</option>
+            <option value="Onsite">Onsite</option>
+          </select>
+          <select id="filter-experience" class="kn-input kn-select">
+            <option value="">Experience</option>
+            <option value="Fresher">Fresher</option>
+            <option value="0-1">0-1</option>
+            <option value="1-3">1-3</option>
+            <option value="3-5">3-5</option>
+          </select>
+          <select id="filter-source" class="kn-input kn-select">
+            <option value="">Source</option>
+            <option value="LinkedIn">LinkedIn</option>
+            <option value="Naukri">Naukri</option>
+            <option value="Indeed">Indeed</option>
+          </select>
+          <select id="filter-status" class="kn-input kn-select">
+            <option value="">Status</option>
+            <option value="Not Applied">Not Applied</option>
+            <option value="Applied">Applied</option>
+            <option value="Rejected">Rejected</option>
+            <option value="Selected">Selected</option>
+          </select>
+          <select id="filter-sort" class="kn-input kn-select">
+            <option value="latest">Latest</option>
+            <option value="match">Best match</option>
+            <option value="salary">Highest salary</option>
+          </select>
+          <label class="kn-filter-bar__toggle kn-caption">
+            <input type="checkbox" id="filter-only-matches" />
+            Show only jobs above my threshold
+          </label>
+        </div>
+      </div>
+      <div class="kn-empty-state kn-mt-md" id="job-empty" style="display: none;">
+        <p class="kn-empty-state__title">No roles match your criteria.</p>
+        <p class="kn-empty-state__text">Adjust filters or lower your threshold.</p>
+      </div>
+      <div class="kn-job-grid" id="job-grid"></div>
+    </section>
+
+    <!-- Saved -->
+    <section class="kn-page kn-dashboard" id="page-saved" data-route="saved">
+      <h1 class="kn-heading-1">Saved</h1>
+      <div class="kn-saved-empty kn-empty-state kn-mt-md" id="saved-empty">
+        <p class="kn-empty-state__title">Nothing saved yet.</p>
+        <p class="kn-empty-state__text">Jobs you save will appear here.</p>
+        <a href="#dashboard" class="kn-btn kn-btn--secondary kn-empty-state__cta" data-route="dashboard">Browse jobs</a>
+      </div>
+      <div class="kn-job-grid" id="saved-job-grid"></div>
+    </section>
+
+    <!-- Digest -->
+    <section class="kn-page" id="page-digest" data-route="digest">
+      <h1 class="kn-heading-1">Digest</h1>
+      <p class="kn-caption kn-mt-xs">Demo Mode: Daily 9AM trigger simulated manually.</p>
+      <div class="kn-error-box kn-mt-md" id="digest-prefs-block" style="display: none;">
+        <p class="kn-error-box__message">Set preferences to generate a personalized digest.</p>
+      </div>
+      <button type="button" class="kn-btn kn-btn--primary kn-mt-md" id="digest-generate">
+        Generate Today's 9AM Digest (Simulated)
+      </button>
+      <div class="kn-panel-actions">
+        <button type="button" class="kn-btn kn-btn--secondary" id="digest-copy" disabled>Copy Digest to Clipboard</button>
+        <button type="button" class="kn-btn kn-btn--secondary" id="digest-email" disabled>Create Email Draft</button>
+      </div>
+      <div class="kn-empty-state kn-mt-md" id="digest-empty">
+        <p class="kn-empty-state__title">No digest yet.</p>
+        <p class="kn-empty-state__text">Generate your first 9AM digest to see personalized roles.</p>
+      </div>
+      <div class="kn-card kn-mt-md kn-digest-card" id="digest-card" style="display: none;">
+        <div class="kn-digest-header">
+          <h2 class="kn-heading-2">Top 10 Jobs For You — 9AM Digest</h2>
+          <p class="kn-caption" id="digest-date"></p>
+        </div>
+        <div class="kn-digest-list" id="digest-list"></div>
+        <p class="kn-caption kn-mt-md">This digest was generated based on your preferences.</p>
+      </div>
+
+      <div class="kn-mt-lg" id="status-updates-section">
+        <h2 class="kn-heading-2">Recent Status Updates</h2>
+        <p class="kn-caption kn-mt-xs">Latest changes across your tracked applications.</p>
+        <p class="kn-caption kn-mt-sm" id="status-updates-empty">No recent status updates.</p>
+        <div class="kn-digest-list kn-mt-sm" id="status-updates-list"></div>
+      </div>
+    </section>
+
+    <!-- Settings -->
+    <section class="kn-page" id="page-settings" data-route="settings">
+      <h1 class="kn-heading-1">Settings</h1>
+      <p class="kn-context-header__sub kn-mb-md">Configure your job preferences.</p>
+      <form class="kn-settings-form" id="settings-form" novalidate>
+        <div class="kn-form-group">
+          <label for="role-keywords" class="kn-form-label">Role keywords</label>
+          <input type="text" id="role-keywords" class="kn-input" placeholder="e.g. Frontend Developer, Product Manager" />
+        </div>
+        <div class="kn-form-group">
+          <label for="preferred-locations" class="kn-form-label">Preferred locations</label>
+          <select id="preferred-locations" class="kn-input kn-select" multiple>
+            <!-- populated from jobs dataset -->
+          </select>
+        </div>
+        <div class="kn-form-group">
+          <span class="kn-form-label">Preferred mode</span>
+          <div class="kn-preferred-modes">
+            <label class="kn-caption">
+              <input type="checkbox" class="kn-preferred-mode" value="Remote" />
+              Remote
+            </label>
+            <label class="kn-caption">
+              <input type="checkbox" class="kn-preferred-mode" value="Hybrid" />
+              Hybrid
+            </label>
+            <label class="kn-caption">
+              <input type="checkbox" class="kn-preferred-mode" value="Onsite" />
+              Onsite
+            </label>
+          </div>
+        </div>
+        <div class="kn-form-group">
+          <label for="experience-level" class="kn-form-label">Experience level</label>
+          <select id="experience-level" class="kn-input kn-select">
+            <option value="">Select level</option>
+            <option value="Fresher">Fresher</option>
+            <option value="0-1">0-1 years</option>
+            <option value="1-3">1-3 years</option>
+            <option value="3-5">3-5 years</option>
+          </select>
+        </div>
+        <div class="kn-form-group">
+          <label for="preferred-skills" class="kn-form-label">Skills</label>
+          <input type="text" id="preferred-skills" class="kn-input" placeholder="e.g. React, Java, SQL" />
+        </div>
+        <div class="kn-form-group">
+          <label for="min-match-score" class="kn-form-label">Minimum match score</label>
+          <input type="range" id="min-match-score" min="0" max="100" step="5" value="40" />
+          <p class="kn-caption kn-mt-xs">Current threshold: <span id="min-match-score-value">40</span>%</p>
+        </div>
+      </form>
+    </section>
+
+    <!-- Proof / JT Test Checklist -->
+    <section class="kn-page" id="page-proof" data-route="proof">
+      <h1 class="kn-heading-1">Proof</h1>
+      <div class="kn-card kn-mt-md" id="jt-proof-card">
+        <h2 class="kn-heading-2">Project 1 — Job Notification Tracker</h2>
+        <div class="kn-proof-project-header">
+          <span class="kn-caption">Project Status:</span>
+          <span class="kn-status-badge kn-status-badge--not-started" id="jt-project-status">Not Started</span>
+        </div>
+        <div class="kn-proof-steps kn-mt-sm">
+          <p class="kn-caption">A) Step Completion Summary</p>
+          <ul class="kn-proof-steps-list">
+            <li>Step 1 — Data & Dashboard <span class="jt-step-status" data-step="1">Pending</span></li>
+            <li>Step 2 — Filters & Preferences <span class="jt-step-status" data-step="2">Pending</span></li>
+            <li>Step 3 — Match Scoring <span class="jt-step-status" data-step="3">Pending</span></li>
+            <li>Step 4 — Daily Digest <span class="jt-step-status" data-step="4">Pending</span></li>
+            <li>Step 5 — Status Tracking <span class="jt-step-status" data-step="5">Pending</span></li>
+            <li>Step 6 — Saved Jobs & Apply <span class="jt-step-status" data-step="6">Pending</span></li>
+            <li>Step 7 — Test Checklist <span class="jt-step-status" data-step="7">Pending</span></li>
+            <li>Step 8 — Proof & Submission <span class="jt-step-status" data-step="8">Pending</span></li>
+          </ul>
+        </div>
+        <div class="kn-proof-artifacts kn-mt-md">
+          <p class="kn-caption">B) Artifact Collection Inputs</p>
+          <div class="kn-form-group">
+            <label for="jt-link-lovable" class="kn-form-label">Lovable Project Link</label>
+            <input type="url" id="jt-link-lovable" class="kn-input" placeholder="https://lovable.dev/projects/..." />
+            <p class="kn-caption kn-proof-error" id="jt-link-lovable-error" style="display: none;">Enter a valid URL starting with http:// or https://</p>
+          </div>
+          <div class="kn-form-group">
+            <label for="jt-link-github" class="kn-form-label">GitHub Repository Link</label>
+            <input type="url" id="jt-link-github" class="kn-input" placeholder="https://github.com/username/repo" />
+            <p class="kn-caption kn-proof-error" id="jt-link-github-error" style="display: none;">Enter a valid URL starting with http:// or https://</p>
+          </div>
+          <div class="kn-form-group">
+            <label for="jt-link-live" class="kn-form-label">Deployed URL (Vercel or equivalent)</label>
+            <input type="url" id="jt-link-live" class="kn-input" placeholder="https://your-app.vercel.app" />
+            <p class="kn-caption kn-proof-error" id="jt-link-live-error" style="display: none;">Enter a valid URL starting with http:// or https://</p>
+          </div>
+          <button type="button" class="kn-btn kn-btn--primary kn-mt-sm" id="jt-copy-submission">Copy Final Submission</button>
+          <p class="kn-caption kn-mt-sm kn-proof-message" id="jt-ship-message" style="display: none;">Project 1 Shipped Successfully.</p>
+        </div>
+      </div>
+
+      <div class="kn-card kn-mt-md" id="jt-test-card">
+        <div class="kn-test-summary">
+          <p class="kn-body">Tests Passed: <span id="jt-test-passed">0</span> / 10</p>
+          <p class="kn-caption kn-test-warning" id="jt-test-warning">Resolve all issues before shipping.</p>
+          <button type="button" class="kn-btn kn-btn--secondary kn-mt-xs" id="jt-test-reset">Reset Test Status</button>
+        </div>
+        <ul class="kn-test-list" id="jt-test-list">
+          <li class="kn-test-item">
+            <label>
+              <input type="checkbox" class="jt-test-checkbox" data-test-id="prefsPersist" />
+              Preferences persist after refresh
+            </label>
+            <span class="kn-caption jt-test-help" title="Set preferences, refresh the page, and confirm values are retained.">How to test</span>
+          </li>
+          <li class="kn-test-item">
+            <label>
+              <input type="checkbox" class="jt-test-checkbox" data-test-id="matchScore" />
+              Match score calculates correctly
+            </label>
+            <span class="kn-caption jt-test-help" title="Use a known job and preferences to verify the score components add up as expected.">How to test</span>
+          </li>
+          <li class="kn-test-item">
+            <label>
+              <input type="checkbox" class="jt-test-checkbox" data-test-id="onlyMatchesToggle" />
+              &quot;Show only matches&quot; toggle works
+            </label>
+            <span class="kn-caption jt-test-help" title="Enable the toggle and confirm only jobs above the threshold are visible.">How to test</span>
+          </li>
+          <li class="kn-test-item">
+            <label>
+              <input type="checkbox" class="jt-test-checkbox" data-test-id="savePersist" />
+              Save job persists after refresh
+            </label>
+            <span class="kn-caption jt-test-help" title="Save a job, refresh the page, and confirm it stays saved and appears in Saved.">How to test</span>
+          </li>
+          <li class="kn-test-item">
+            <label>
+              <input type="checkbox" class="jt-test-checkbox" data-test-id="applyNewTab" />
+              Apply opens in new tab
+            </label>
+            <span class="kn-caption jt-test-help" title="Click Apply on a job and confirm the application link opens in a new browser tab.">How to test</span>
+          </li>
+          <li class="kn-test-item">
+            <label>
+              <input type="checkbox" class="jt-test-checkbox" data-test-id="statusPersist" />
+              Status update persists after refresh
+            </label>
+            <span class="kn-caption jt-test-help" title="Change a job status, refresh, and confirm the same status is still selected.">How to test</span>
+          </li>
+          <li class="kn-test-item">
+            <label>
+              <input type="checkbox" class="jt-test-checkbox" data-test-id="statusFilter" />
+              Status filter works correctly
+            </label>
+            <span class="kn-caption jt-test-help" title="Filter by each status and confirm only matching jobs are shown.">How to test</span>
+          </li>
+          <li class="kn-test-item">
+            <label>
+              <input type="checkbox" class="jt-test-checkbox" data-test-id="digestTop10" />
+              Digest generates top 10 by score
+            </label>
+            <span class="kn-caption jt-test-help" title="Generate a digest and confirm the ordering is by match score then recency.">How to test</span>
+          </li>
+          <li class="kn-test-item">
+            <label>
+              <input type="checkbox" class="jt-test-checkbox" data-test-id="digestPersist" />
+              Digest persists for the day
+            </label>
+            <span class="kn-caption jt-test-help" title="Generate a digest, refresh, and confirm the same jobs remain for that date.">How to test</span>
+          </li>
+          <li class="kn-test-item">
+            <label>
+              <input type="checkbox" class="jt-test-checkbox" data-test-id="noConsoleErrors" />
+              No console errors on main pages
+            </label>
+            <span class="kn-caption jt-test-help" title="Open browser dev tools and navigate core routes to confirm the console is clean.">How to test</span>
+          </li>
+        </ul>
+      </div>
+      <div class="kn-empty-state kn-mt-md">
+        <p class="kn-empty-state__title">Artifact collection</p>
+        <p class="kn-empty-state__text">Proof and artifact collection will be built here.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Job Detail Modal -->
+  <div class="kn-modal-overlay" id="job-modal" aria-hidden="true">
+    <div class="kn-modal" role="dialog" aria-labelledby="modal-title">
+      <div class="kn-modal__header">
+        <h2 class="kn-modal__title" id="modal-title"></h2>
+        <p class="kn-modal__company" id="modal-company"></p>
+      </div>
+      <div class="kn-modal__body">
+        <div class="kn-modal__section">
+          <span class="kn-modal__label">Description</span>
+          <p class="kn-modal__desc" id="modal-desc"></p>
+        </div>
+        <div class="kn-modal__section">
+          <span class="kn-modal__label">Skills</span>
+          <div class="kn-modal__skills" id="modal-skills"></div>
+        </div>
+      </div>
+      <div class="kn-modal__footer">
+        <button type="button" class="kn-btn kn-btn--primary" id="modal-apply">Apply</button>
+        <button type="button" class="kn-btn kn-btn--secondary" id="modal-save">Save</button>
+        <button type="button" class="kn-btn kn-btn--secondary kn-modal__close" id="modal-close">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="jobs-data.js"></script>
+  <script src="router.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
